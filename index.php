@@ -77,3 +77,44 @@ $arrow = $order === 'asc' ? "▲" : "▼";
 <a href="<?= urlWithSort('price', $sort==='price'?$nextOrder:'asc', 1) ?>">Prix <?= $sort==='price' ? $arrow : '' ?></a> |
 <a href="<?= urlWithSort('host', $sort==='host'?$nextOrder:'asc', 1) ?>">Propriétaire <?= $sort==='host' ? $arrow : '' ?></a>
 </div>
+
+<?php foreach ($listings as $l): ?>
+<div class="listing">
+    <img src="<?= htmlspecialchars($l['picture_url']) ?>" alt="">
+    <h3><?= htmlspecialchars($l['name']) ?></h3>
+    <p>Hôte : <?= htmlspecialchars($l['host_name']) ?></p>
+    <p>Ville : <?= htmlspecialchars($l['neighbourhood_group_cleansed']) ?></p>
+    <p>Prix : <?= htmlspecialchars($l['price']) ?> € / nuit</p>
+</div>
+<?php endforeach; ?>
+
+<div class="pagination">
+    <?php if ($page > 1): ?>
+        <a href="<?= urlWithSort($sort, $order, $page-1) ?>">Précédent</a>
+    <?php endif; ?>
+
+    <?php for ($i = 1; $i <= $pages; $i++): ?>
+        <a class="<?= $i==$page?'current':'' ?>" href="<?= urlWithSort($sort, $order, $i) ?>"><?= $i ?></a>
+    <?php endfor; ?>
+
+    <?php if ($page < $pages): ?>
+        <a href="<?= urlWithSort($sort, $order, $page+1) ?>">Suivant</a>
+    <?php endif; ?>
+</div>
+
+<div class="add-form">
+    <h2>Ajouter une annonce</h2>
+    <form method="post" action="add.php">
+        <p><label>Nom : </label> <input type="text" name="name" required></p>
+        <p><label>Image : </label> <input type="text" name="picture_url" required></p>
+        <p><label>Propriétaire : </label> <input type="text" name="host_name" required></p>
+        <p><label>Avatar : </label> <input type="text" name="host_thumbnail_url"></p>
+        <p><label>Prix : </label> <input type="number" name="price" required></p>
+        <p><label>Ville : </label> <input type="text" name="neighbourhood_group_cleansed" required></p>
+        <p><label>Note : </label> <input type="number" name="review_scores_value"></p>
+        <button type="submit">Ajouter</button>
+    </form>
+</div>
+
+</body>
+</html>
